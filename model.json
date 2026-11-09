@@ -1,0 +1,33 @@
+{
+  "$schema": "https://weightsofgiants.com/schema/model-v1.json",
+  "name": "pp-picodet-s-ghost",
+  "version": "1.1.0",
+  "upstream_repo": "https://github.com/PaddlePaddle/PaddleDetection",
+  "license": "apache-2.0",
+  "target_hardware": "la-frite-1gb",
+  "runtime": "onnxruntime",
+  "threads": 4,
+  "domains": ["indoor", "urban", "rural"],
+  "frame_policy": {
+    "skip": 0,
+    "resize": "letterbox"
+  },
+  "stages": [
+    {
+      "type": "detector",
+      "model": "models/detector_int8.onnx",
+      "input_size": [320, 320],
+      "conf_threshold": 0.32,
+      "iou_threshold": 0.45
+    },
+    {
+      "type": "tracker",
+      "algo": "bytetrack-lite",
+      "params": {
+        "track_thresh": 0.35,
+        "track_buffer": 30,
+        "match_thresh": 0.82
+      }
+    }
+  ]
+}
